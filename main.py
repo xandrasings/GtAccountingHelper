@@ -1,8 +1,13 @@
-import os
+from Imports.Utilities.dataProcessing import *
+from Imports.Utilities.output import *
 
 def main():
-	os.system('cls' if os.name == 'nt' else 'clear')
-	print("Welcome to Glacier Tek's Amazon Accounting Helper.")
+	clearScreen()
+	output('Welcome to Glacier Tek\'s Amazon Accounting Helper.')
+	prompt('Press enter to start!')
+	processInputFile('Amazon')
+	clearScreen()
+	processInputFile('QuickBooks')
 
 
 main()
