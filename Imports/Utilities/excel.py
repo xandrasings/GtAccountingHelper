@@ -15,7 +15,7 @@ def loadWorkbook(fileType, filePath, readOnly = False):
 
 def loadSheet(workBook, fileType):
 	sheet = workBook.get_active_sheet()
-	# TADA verify sheet formatting here based on fileType
+	# TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
 	return sheet
 
 
@@ -62,8 +62,8 @@ def processQuickBooksReport(filePath):
 		invoices[city].append(QuickBooksRecord(date, invoiceNumber, debit, credit))
 
 
-def processAmazonReport(filePath, quickBooksRecords):
-	workBook = loadWorkbook(AMAZON, filePath, False)
+def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
+	workBook = loadWorkbook(AMAZON, amazonFilePath, False)
 	sheet = loadSheet(workBook, AMAZON)
 
 	orders = {}
@@ -83,22 +83,37 @@ def processAmazonReport(filePath, quickBooksRecords):
 			if orderId not in orders[city]:
 				orders[city][orderId] = []
 
-			orders[city][orderId].append(AmazonOrderRecord(row, date, '')) # TADA populate cash received 
+			orders[city][orderId].append(AmazonOrderRecord(row, date, '')) # TADA populate cash received #READ_AMAZON_FILE
+			# TADA populate any other math necessary for cutoff and other business logic #READ_AMAZON_FILE
 
 		else:
 			nonOrders.append(AmazonNonOrderRecord(row, date, recordType))
-
-	# populate invoice number
+	
+	orders = populateInvoiceNumbers(orders, quickBooksRecords)
+	orders = identifyCutOffRecords(orders) # TADA include whatever manual input values are needed #WRITE_LOGIC_FOR_CUTOFF
 
 	modifyAmazonReport(sheet, orders, nonOrders)
-	workBook.save('happylilfile.xlsx') # TADA
+	workBook.save('happylilfile.xlsx') # TADA save based on given reportFilePath #SAVE_EXCEL_FILE
+
+
+def populateInvoiceNumbers(orders, quickBooksRecords):
+	return orders # TADA populate invoice number #WRITE_LOGIC_FOR_MATCHING_TRANSACTIONS
+
+
+def identifyCutOffRecords(orders):
+	return orders # TADA identify cut off records #WRITE_LOGIC_FOR_CUTOFF
 
 
 def modifyAmazonReport(sheet, orders, nonOrders):
+	colorCutOffRecords(sheet, orders)
 	addNewDataColumns(sheet, orders)
 	copyNonOrders(sheet, nonOrders)
 	removeNonOrders(sheet, nonOrders)
 	removeHeaderRows(sheet)
+
+
+def colorCutOffRecords(sheet, orders):
+	pass # TADA color the records where cutOff = true
 
 
 def addNewDataColumns(sheet, orders):

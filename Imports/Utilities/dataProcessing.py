@@ -9,7 +9,7 @@ def processReports():
 	amazonSummaryData = collectAmazonSummaryData()
 	summarizeUserInput(filePaths, amazonSummaryData)
 	quickBooksRecords = processQuickBooksReport(filePaths[QUICKBOOKS])
-	processAmazonReport(filePaths[AMAZON], quickBooksRecords);
+	processAmazonReport(filePaths[AMAZON], quickBooksRecords, filePaths[REPORT]);
 
 
 def collectFilePaths():

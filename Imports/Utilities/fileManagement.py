@@ -9,12 +9,12 @@ import os
 import sys
 
 
-def promptForFilePath(inputType, targetDirectoryPath = ''):
+def promptForFilePath(inputType, targetDirectoryPath = ''): # TADA modify me to work for selecting report path #SAVE_EXCEL_FILE
 	if targetDirectoryPath == '': # the first run of this function.
 		targetDirectoryPath = getMainPath() # set the path to the main or exe path
 	
 	clearScreen()
-	output('Please navigate to the ' + inputType + ' report.')
+	output('Please navigate to the desired ' + inputType + ' location.')
 	output()
 	output('Searching: ' + targetDirectoryPath) # give the user path context
 	validOptions = getValidPathOptions(targetDirectoryPath) # get every dir and excel file

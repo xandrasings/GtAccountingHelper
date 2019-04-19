@@ -1,10 +1,12 @@
 # File Information
-AMAZON = 'Amazon'
-QUICKBOOKS = 'QuickBooks'
+AMAZON = 'Amazon summary'
+QUICKBOOKS = 'QuickBooks summary'
+REPORT = 'Report output'
 
 FILE_TYPES = [
 	AMAZON,
-	QUICKBOOKS
+	QUICKBOOKS,
+	REPORT
 ]
 
 ROW = 'Row'
@@ -53,6 +55,7 @@ LOCATION = {
 }
 
 # Amazon Summary Data
+# TADA cut this down as needed #WRITE_LOGIC_FOR_CUTOFF
 BEGINNING_BALANCE_SUBTOTAL = 'Beginning Balance Subtotal'
 ORDERS_SUBTOTAL = 'Orders Subtotal'
 REFUNDS_SUBTOTAL = 'Refunds Subtotal'
@@ -61,6 +64,7 @@ TOTAL_BALANCE = 'Total Balance'
 UNAVAILABLE_BALANCE = 'Unavailable Balance'
 TRANSFER_AMOUNT = 'Transfer Amount'
 
+# TADA cut this down as needed #WRITE_LOGIC_FOR_CUTOFF
 AMAZON_SUMMARY_DATA_TYPES = [
 	BEGINNING_BALANCE_SUBTOTAL,
 	ORDERS_SUBTOTAL,
