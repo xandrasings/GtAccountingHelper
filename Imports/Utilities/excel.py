@@ -27,7 +27,7 @@ def loadSheet(workbook, fileType):
 		try:
 			sheet = workbook[sheetName]
 		except:
-			output('Could not open sheet ' + sheetName + 'of ' + fileType + ' workbook.')
+			quit('Could not open sheet ' + sheetName + ' of ' + fileType + ' workbook.')
 
 	verifySheetFormatting(fileType, sheet)
 	return sheet
@@ -40,7 +40,10 @@ def verifyColumnMax(fileType, sheet):
 	pass # TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
 
 def verifyHeaderContent(fileType, sheet):
-	pass # TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
+	row = LOCATION[fileType][ROW][HEADER]
+	for column, expectedContent in LOCATION[fileType][HEADER].items():
+		if getCellString(sheet, row, column) != expectedContent.upper():
+			quit(fileType + ' workbook did not have expected column header ' + expectedContent + ' in row ' + str(row) + ' column ' + str(column) + '.')
 
 
 def setCellValue(sheet, row, column, value):
@@ -51,7 +54,7 @@ def getCellValue(sheet, row, column):
 	try:
 		return sheet.cell(row = row, column = column).value
 	except:
-		quit('Could not get cell value for row ' + row + ', column ' + column + '.')
+		quit('Could not get cell value for row ' + str(row) + ', column ' + str(column) + '.')
 
 
 def getCellString(sheet, row, column):
@@ -59,7 +62,7 @@ def getCellString(sheet, row, column):
 	try:
 		return str(cellValue).upper().strip()
 	except:
-		quit('Could not convert cell value ' + cellValue + ' to string.')
+		quit('Could not convert cell value for row ' + str(row) + ', column ' + str(column) + ' to string.')
 
 
 def getCellFloat(sheet, row, column):

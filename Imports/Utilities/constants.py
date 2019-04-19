@@ -145,7 +145,7 @@ LOCATION = {
 			19 : DEBIT,
 			21 : CREDIT,
 			23 : SHIP_TO_CITY,
-			24 : SHIP_TO_STATE
+			25 : SHIP_TO_STATE
 		}
 	}
 }
