@@ -12,8 +12,7 @@ def loadWorkbook(fileType, filePath, readOnly = False):
 	try:
 		return load_workbook(filePath, readOnly)
 	except:
-		output('Could not open workbook for ' + fileType + '.')
-		quit()
+		quit('Could not open workbook for ' + fileType + '.')
 
 
 def loadSheet(workbook, fileType):
@@ -22,16 +21,26 @@ def loadSheet(workbook, fileType):
 		try:
 			sheet = workbook.get_active_sheet()
 		except:
-			output('Could not open active sheet of ' + fileType + ' workbook.')
-			quit()
+			quit('Could not open active sheet of ' + fileType + ' workbook.')
 	else:
 		sheetName = LOCATION[fileType][SHEET]
 		try:
 			sheet = workbook[sheetName]
 		except:
 			output('Could not open sheet ' + sheetName + 'of ' + fileType + ' workbook.')
-	# TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
+
+	verifySheetFormatting(fileType, sheet)
 	return sheet
+
+def verifySheetFormatting(fileType, sheet):
+	verifyColumnMax(fileType, sheet)
+	verifyHeaderContent(fileType, sheet)
+
+def verifyColumnMax(fileType, sheet):
+	pass # TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
+
+def verifyHeaderContent(fileType, sheet):
+	pass # TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
 
 
 def setCellValue(sheet, row, column, value):
@@ -39,23 +48,36 @@ def setCellValue(sheet, row, column, value):
 
 
 def getCellValue(sheet, row, column):
-	return sheet.cell(row = row, column = column).value
+	try:
+		return sheet.cell(row = row, column = column).value
+	except:
+		quit('Could not get cell value for row ' + row + ', column ' + column + '.')
 
 
 def getCellString(sheet, row, column):
-	return str(getCellValue(sheet, row, column)).upper().strip()
+	cellValue = getCellValue(sheet, row, column)
+	try:
+		return str(cellValue).upper().strip()
+	except:
+		quit('Could not convert cell value ' + cellValue + ' to string.')
 
 
 def getCellFloat(sheet, row, column):
-	value = getCellValue(sheet, row, column)
-	if value == None:
-		value = 0
-	return float(value)
+	cellValue = getCellValue(sheet, row, column)
+	try:
+		if cellValue == None:
+			cellValue = 0
+		return float(cellValue)
+	except:
+		quit('Could not convert cell value ' + cellValue + ' to float.')
 
 
 def getCellDateString(fileType, sheet, row, column):
 	dateString = getCellString(sheet, row, column)
-	return datetime.strptime(dateString[0 : dateString.index(',') + 6], '%b %d, %Y')
+	try:
+		return datetime.strptime(dateString[0 : dateString.index(',') + 6], '%b %d, %Y')
+	except:
+		quit('Could not convert date string ' + dateString + ' to datetime.')
 
 
 def processQuickBooksReport(filePath):
