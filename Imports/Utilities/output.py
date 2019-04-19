@@ -8,13 +8,5 @@ def output(text):
 	print(text)
 
 
-def prompt(text = '', default = ''):
-	result = ''
-	if default == '':
-		result = input(text + ' > ').upper()
-	else:
-		outputPrompt(text)
-		result = input('enter \'Y\' for \'' + default + '\' > ').upper()
-		if result == 'Y':
-			result = default
-	return result
+def prompt(text = '', prefix = ''):
+	return input(text + ' > ' + prefix).upper()
