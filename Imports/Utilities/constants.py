@@ -35,21 +35,44 @@ SHEET = 'Sheet'
 ROW = 'Row'
 COLUMN = 'Column'
 
+ACCOUNT = 'Account'
 CASH_RECEIVED = 'Cash Received'
 CITY = 'City'
+CLR = 'Clr'
 CREDIT = 'Credit'
 DATE = 'Date'
+DATE_TIME = 'date/time'
+DESCRIPTION = 'description'
 DEBIT = 'Debit'
+FBA_FEES = 'fba fees'
+FULFILLMENT = 'fulfillment'
+GIFT_WRAP_CREDITS = 'gift wrap credits'
 HEADER = 'Header'
 INVOICE_NUMBER = 'Invoice Number'
+MARKETPLACE = 'marketplace'
+MARKETPLACE_FACILITATOR_TAX = 'Marketplace Facilitator Tax'
 MAX = 'Max'
+MEMO = 'Memo'
 NON_ORDER_BUFFER = 'Non Order Buffer'
+NUM = 'Num'
+ORDER_CITY = 'order city'
 ORDER_ID = 'Order ID'
+ORDER_POSTAL = 'order postal'
+ORDER_STATE = 'order state'
+OTHER = 'other'
+OTHER_TRANSACTION_FEES = 'other transaction fees'
 PRODUCT_SALES = 'Product Sales'
+PROMOTIONAL_REBATES = 'promotional rebates'
+QUANTITY = 'quantity'
 SALES_TAX_COLLECTED = 'Sales Tax Collected'
 SELLING_FEES = 'Selling Fees'
+SETTLEMENT_ID = 'settlement id'
 SHEET_1 = 'Sheet1'
+SHIP_TO_CITY = 'Ship To City'
+SHIP_TO_STATE = 'Ship To State'
 SHIPPING_CREDITS = 'Shipping Credits'
+SKU = 'sku'
+SPLIT = 'Split'
 TOTAL = 'Total'
 TYPE = 'Type'
 
@@ -72,6 +95,31 @@ LOCATION = {
 			MAX : 23,
 			INVOICE_NUMBER : 24,
 			CASH_RECEIVED : 25
+		},
+		HEADER : {
+			1 : DATE_TIME,
+			2 : SETTLEMENT_ID,
+			3 : TYPE,
+			4 : ORDER_ID,
+			5 : SKU,
+			6 : DESCRIPTION,
+			7 : QUANTITY,
+			8 : MARKETPLACE,
+			9 : FULFILLMENT,
+			10 : ORDER_CITY,
+			11 : ORDER_STATE,
+			12 : ORDER_POSTAL,
+			13 : PRODUCT_SALES,
+			14 : SHIPPING_CREDITS,
+			15 : GIFT_WRAP_CREDITS,
+			16 : PROMOTIONAL_REBATES,
+			17 : SALES_TAX_COLLECTED,
+			18 : MARKETPLACE_FACILITATOR_TAX,
+			19 : SELLING_FEES,
+			20 : FBA_FEES,
+			21 : OTHER_TRANSACTION_FEES,
+			22 : OTHER,
+			23 : TOTAL
 		}
 	},
 	QUICKBOOKS : {
@@ -85,6 +133,19 @@ LOCATION = {
 			DATE : 7,
 			DEBIT : 19,
 			INVOICE_NUMBER : 9
+		},
+		HEADER : {
+			5 : TYPE,
+			7 : DATE,
+			9 : NUM,
+			11 : MEMO,
+			13 : ACCOUNT,
+			15 : CLR,
+			17 : SPLIT,
+			19 : DEBIT,
+			21 : CREDIT,
+			23 : SHIP_TO_CITY,
+			24 : SHIP_TO_STATE
 		}
 	}
 }
