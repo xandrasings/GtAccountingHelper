@@ -35,7 +35,7 @@ def processAmazonReport(filePath, quickBooksRecords):
 		else:
 			nonOrders.append(AmazonNonOrderRecord(i, readCellDateString(sheet, i, 1), recordType))
 	
-	for i in nonOrders:
+	for i in sorted(nonOrders):
 		print(i.summarize())
 
 def readCellString(sheet, row, column):

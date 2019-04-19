@@ -7,7 +7,7 @@ class AmazonRecord:
 		return self.row
 
 	def getDate(self):
-		return self.cashReceived
+		return self.date
 
 	def summarize(self):
 		return "{row: " + str(self.row) + ", date: " + str(self.date) + "}"
