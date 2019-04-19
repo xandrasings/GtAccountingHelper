@@ -1,3 +1,9 @@
+# File Types
+AMAZON = 'Amazon'
+QUICKBOOKS = 'QuickBooks'
+
+FILE_TYPES = [AMAZON, QUICKBOOKS]
+
 # Amazon summary data
 BEGINNING_BALANCE_SUBTOTAL = 'Beginning Balance Subtotal'
 ORDERS_SUBTOTAL = 'Orders Subtotal'

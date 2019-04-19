@@ -9,14 +9,26 @@ def processReports():
 
 def collectFilePaths():
 	filePaths = {}
-	filePaths['Amazon'] = promptForFilePath('Amazon')
-	filePaths['QuickBooks'] = promptForFilePath('QuickBooks')
+	for fileType in FILE_TYPES:
+		filePaths[fileType] = promptForFilePath(fileType)
 	return filePaths
 
 
 def collectAmazonSummaryData():
 	output('Please enter the following values from the Amazon summary:')
 	amazonSummaryData = {}
-	for i in AMAZON_SUMMARY_DATA_TYPES:
-		amazonSummaryData[i] = float(prompt(i,'$').replace(',',''))
+	for dataType in AMAZON_SUMMARY_DATA_TYPES:
+		amazonSummaryData[dataType] = getDataValue(dataType)
 	return amazonSummaryData
+
+
+def getDataValue(dataType):
+	while True:
+		inputValue = prompt(dataType,'$')
+		try:
+			if inputValue == 'Q':
+				quit()
+			else:
+				return float(inputValue.replace(',',''))
+		except ValueError:
+			output('Input should be a number with no letters or symbols.')

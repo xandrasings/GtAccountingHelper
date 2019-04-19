@@ -109,10 +109,10 @@ def getPathIndex(validOptions):
 			else:
 				fileIndex = int(inputIndex) - 1
 				if fileIndex < -1 or fileIndex >= maxInput:
-					output('Selection should be between 1 and ' + str(maxInput))
+					output('Selection should be between 1 and ' + str(maxInput) + '.')
 					fileIndex = -2
 		except ValueError:
-			output('Selection should be an integer')
+			output('Selection should be an integer.')
 
 	return fileIndex
 
