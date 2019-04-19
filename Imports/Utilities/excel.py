@@ -1,6 +1,7 @@
 from .constants import *
 from .fileManagement import *
 from ..Classes.AmazonNonOrderRecord import *
+from ..Classes.AmazonOrderRecord import *
 
 from datetime import datetime
 from openpyxl import load_workbook
@@ -47,19 +48,51 @@ def processAmazonReport(filePath, quickBooksRecords):
 
 	for row in range(LOCATION[AMAZON][ROW][HEADER] + 1, sheet.max_row + 1):
 		recordType = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][TYPE]) 
+		date = getCellDateString(sheet, row, LOCATION[AMAZON][COLUMN][DATE])
 		if recordType == ORDER:
-			pass # TADA ACCOUNTED store in orders
+			city = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][CITY])
+			orderId = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][ORDER_ID])
+			if city not in orders:
+				orders[city] = {}
+			if orderId not in orders[city]:
+				orders[city][orderId] = []
+			orders[city][orderId].append(AmazonOrderRecord(row, date, '')) # TADA populate cash received 
 		else:
-			nonOrders.append(AmazonNonOrderRecord(row, getCellDateString(sheet, row, LOCATION[AMAZON][COLUMN][DATE]), recordType))
+			nonOrders.append(AmazonNonOrderRecord(row, date, recordType))
+
+	# populate invoice number
 
 	modifyAmazonReport(sheet, orders, nonOrders)
 	workBook.save('happylilfile.xlsx') # TADA
 
 
 def modifyAmazonReport(sheet, orders, nonOrders):
+	addNewDataColumns(sheet, orders)
 	copyNonOrders(sheet, nonOrders)
 	removeNonOrders(sheet, nonOrders)
 	removeHeaderRows(sheet)
+
+
+def addNewDataColumns(sheet, orders):
+	addHeaders(sheet)
+	addNewData(sheet, orders)
+
+
+def addHeaders(sheet):
+	for header in [CASH_RECEIVED, INVOICE]:
+		addHeader(sheet, header)
+
+
+def addHeader(sheet, header):
+	setCellValue(sheet, LOCATION[AMAZON][ROW][HEADER], LOCATION[AMAZON][COLUMN][header], header)
+
+
+def addNewData(sheet, orders):
+	for ordersByCity in orders.values():
+		for ordersByInvoice in ordersByCity.values():
+			for order in ordersByInvoice:
+				setCellValue(sheet, order.getRow(), LOCATION[AMAZON][COLUMN][CASH_RECEIVED], order.getCashReceived())
+				setCellValue(sheet, order.getRow(), LOCATION[AMAZON][COLUMN][INVOICE], order.getInvoice())
 
 
 def copyNonOrders(sheet, nonOrders):

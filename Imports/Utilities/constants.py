@@ -10,10 +10,14 @@ FILE_TYPES = [
 ROW = 'Row'
 COLUMN = 'Column'
 
+CASH_RECEIVED = 'Cash Received'
+CITY = 'City'
 DATE = 'Date'
 HEADER = 'Header'
+INVOICE = 'Invoice'
 MAX = 'Max'
 NON_ORDER_BUFFER = 'Non Order Buffer'
+ORDER_ID = 'Order ID'
 TYPE = 'Type'
 
 LOCATION = {
@@ -25,7 +29,11 @@ LOCATION = {
 		COLUMN : {
 			DATE : 1,
 			TYPE : 3,
-			MAX : 25
+			ORDER_ID : 4,
+			CITY : 10,
+			MAX : 23,
+			CASH_RECEIVED : 24,
+			INVOICE : 25
 		}
 	},
 	QUICKBOOKS : {
