@@ -47,19 +47,18 @@ def processQuickBooksReport(filePath):
 	workBook = loadWorkbook(QUICKBOOKS, filePath, True)
 	sheet = loadSheet(workBook, QUICKBOOKS)
 
-	invoices = {}
+	invoices = []
 
 	for row in range(LOCATION[QUICKBOOKS][ROW][HEADER] + 1, sheet.max_row + 1):
-		city = getCellString(sheet, row, LOCATION[QUICKBOOKS][COLUMN][CITY])
 		date = getCellValue(sheet, row, LOCATION[QUICKBOOKS][COLUMN][DATE])
 		invoiceNumber = getCellString(sheet, row, LOCATION[QUICKBOOKS][COLUMN][INVOICE_NUMBER])
+		city = getCellString(sheet, row, LOCATION[QUICKBOOKS][COLUMN][CITY])
 		debit = getCellFloat(sheet, row, LOCATION[QUICKBOOKS][COLUMN][DEBIT])
 		credit = getCellFloat(sheet, row, LOCATION[QUICKBOOKS][COLUMN][CREDIT])
 
-		if city not in invoices:
-			invoices[city] = []
+		invoices.append(QuickBooksRecord(date, invoiceNumber, city, debit, credit))
 
-		invoices[city].append(QuickBooksRecord(date, invoiceNumber, debit, credit))
+	return invoices
 
 
 def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
