@@ -1,4 +1,5 @@
 from .constants import *
+from .excel import *
 from .fileManagement import *
 from .output import *
 from .sys import *
@@ -7,6 +8,8 @@ def processReports():
 	filePaths = collectFilePaths()
 	amazonSummaryData = collectAmazonSummaryData()
 	summarizeUserInput(filePaths, amazonSummaryData)
+	quickBooksRecords = processQuickBooksReport(filePaths[QUICKBOOKS])
+	processAmazonReport(filePaths[AMAZON], quickBooksRecords);
 
 
 def collectFilePaths():
@@ -55,6 +58,6 @@ def summarizeAmazonSummaryData(amazonSummaryData):
 	output()
 
 def promptContinue():
-	output('Press enter to continue or \'Q\' to quit.)')
+	output('Press enter to continue or \'Q\' to quit.')
 	if prompt() == 'Q':
 		quit()
