@@ -10,7 +10,7 @@ def processReports():
 	summarizeUserInput(filePaths, amazonSummaryData)
 	quickBooksRecords = processQuickBooksReport(filePaths[QUICKBOOKS])
 	filePaths[REPORT] = modifyFileName(filePaths[REPORT], filePaths[AMAZON])
-	processAmazonReport(filePaths[AMAZON], quickBooksRecords, filePaths[REPORT]);
+	processAmazonReport(filePaths[AMAZON], quickBooksRecords, amazonSummaryData[UNAVAILABLE_BALANCE], filePaths[REPORT]);
 
 
 def collectFilePaths():

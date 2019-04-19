@@ -2,6 +2,7 @@ from .constants import *
 from .fileManagement import *
 from ..Classes.AmazonNonOrderRecord import *
 from ..Classes.AmazonOrderRecord import *
+from ..Classes.CutOffSplit import *
 from ..Classes.QuickBooksRecord import *
 
 from datetime import datetime
@@ -104,39 +105,31 @@ def processQuickBooksReport(filePath):
 	return invoices
 
 
-def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
+def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, reportFilePath):
 	workbook = loadWorkbook(AMAZON, amazonFilePath, False)
 	sheet = loadSheet(workbook, AMAZON)
 
-	orders = {}
+	orders = []
 	nonOrders = []
 
 	for row in range(LOCATION[AMAZON][ROW][HEADER] + 1, sheet.max_row + 1):
 		recordType = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][TYPE]) 
 		date = getCellDateString(AMAZON, sheet, row, LOCATION[AMAZON][COLUMN][DATE])
-		productSales = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][PRODUCT_SALES])
-		shippingCredits = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SHIPPING_CREDITS])
-		salesTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SALES_TAX_COLLECTED])
-		sellingFees = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SELLING_FEES])
-		total = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][TOTAL])
 
 		if recordType == ORDER:
 			city = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][CITY])
 			orderId = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][ORDER_ID])
-
-			if city not in orders:
-				orders[city] = {}
-
-			if orderId not in orders[city]:
-				orders[city][orderId] = []
-
-			orders[city][orderId].append(AmazonOrderRecord(row, date, productSales, shippingCredits, salesTaxCollected, sellingFees, total))
-
+			productSales = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][PRODUCT_SALES])
+			shippingCredits = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SHIPPING_CREDITS])
+			salesTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SALES_TAX_COLLECTED])
+			sellingFees = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SELLING_FEES])
+			total = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][TOTAL])
+			orders.append(AmazonOrderRecord(row, date, orderId, city, productSales, shippingCredits, salesTaxCollected, sellingFees, total))
 		else:
 			nonOrders.append(AmazonNonOrderRecord(row, date, recordType))
 	
 	populateInvoiceNumbers(orders, quickBooksRecords)
-	identifyCutOffRecords(orders) # TADA include whatever manual input values are needed #WRITE_LOGIC_FOR_CUTOFF
+	cutOffSplit = identifyCutOffRecords(orders, unavailableBalance)
 
 	modifyAmazonReport(sheet, orders, nonOrders)
 	saveAmazonReport(workbook, reportFilePath)
@@ -146,8 +139,11 @@ def populateInvoiceNumbers(orders, quickBooksRecords):
 	pass # TADA populate invoice number #WRITE_LOGIC_FOR_MATCHING_TRANSACTIONS
 
 
-def identifyCutOffRecords(orders):
+def identifyCutOffRecords(orders, unavailableBalance):
 	pass # TADA identify cut off records #WRITE_LOGIC_FOR_CUTOFF
+	# TADA if able to sort out the cut off records, turn them True and return none
+	# TADA else sum array values from bottom up until value is above unavailable balance, set them to cutoffTrue
+	# TADA mark row and calculate cutoff, return as CutOffSplit
 
 
 def saveAmazonReport(workbook, filePath):
@@ -183,11 +179,9 @@ def addHeader(sheet, header):
 
 
 def addNewData(sheet, orders):
-	for ordersByCity in orders.values():
-		for ordersByInvoiceNumber in ordersByCity.values():
-			for order in ordersByInvoiceNumber:
-				setCellValue(sheet, order.getRow(), LOCATION[AMAZON][COLUMN][CASH_RECEIVED], order.getCashReceived())
-				setCellValue(sheet, order.getRow(), LOCATION[AMAZON][COLUMN][INVOICE_NUMBER], order.getInvoiceNumber())
+	for order in orders:
+		setCellValue(sheet, order.getRow(), LOCATION[AMAZON][COLUMN][CASH_RECEIVED], order.getCashReceived())
+		setCellValue(sheet, order.getRow(), LOCATION[AMAZON][COLUMN][INVOICE_NUMBER], order.getInvoiceNumber())
 
 
 def copyNonOrders(sheet, nonOrders):

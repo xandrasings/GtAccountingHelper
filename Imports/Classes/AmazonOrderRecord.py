@@ -1,8 +1,10 @@
 from .AmazonRecord import *
 
 class AmazonOrderRecord(AmazonRecord):
-	def __init__(self, row, date, productSales, shippingCredits, salesTaxCollected, sellingFees, total):
+	def __init__(self, row, date, orderId, city, productSales, shippingCredits, salesTaxCollected, sellingFees, total):
 		super().__init__(row, date)
+		self.orderId = orderId
+		self.city = city
 		self.invoiceNumber = ''
 		self.cashReceived = productSales + shippingCredits + sellingFees
 		self.taxedTotal = shippingCredits + total
