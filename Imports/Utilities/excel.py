@@ -9,12 +9,27 @@ from openpyxl import load_workbook
 
 
 def loadWorkbook(fileType, filePath, readOnly = False):
-	workBook = load_workbook(filePath, readOnly)
-	return workBook
+	try:
+		return load_workbook(filePath, readOnly)
+	except:
+		output('Could not open workbook for ' + fileType + '.')
+		quit()
 
 
-def loadSheet(workBook, fileType):
-	sheet = workBook.get_active_sheet() # TADA sheet1
+def loadSheet(workbook, fileType):
+	sheet = None
+	if SHEET not in LOCATION[fileType] or len(workbook.sheetnames) == 1:
+		try:
+			sheet = workbook.get_active_sheet()
+		except:
+			output('Could not open active sheet of ' + fileType + ' workbook.')
+			quit()
+	else:
+		sheetName = LOCATION[fileType][SHEET]
+		try:
+			sheet = workbook[sheetName]
+		except:
+			output('Could not open sheet ' + sheetName + 'of ' + fileType + ' workbook.')
 	# TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
 	return sheet
 
@@ -44,8 +59,8 @@ def getCellDateString(fileType, sheet, row, column):
 
 
 def processQuickBooksReport(filePath):
-	workBook = loadWorkbook(QUICKBOOKS, filePath, True)
-	sheet = loadSheet(workBook, QUICKBOOKS)
+	workbook = loadWorkbook(QUICKBOOKS, filePath, True)
+	sheet = loadSheet(workbook, QUICKBOOKS)
 
 	invoices = []
 
@@ -62,8 +77,8 @@ def processQuickBooksReport(filePath):
 
 
 def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
-	workBook = loadWorkbook(AMAZON, amazonFilePath, False)
-	sheet = loadSheet(workBook, AMAZON)
+	workbook = loadWorkbook(AMAZON, amazonFilePath, False)
+	sheet = loadSheet(workbook, AMAZON)
 
 	orders = {}
 	nonOrders = []
@@ -71,6 +86,11 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
 	for row in range(LOCATION[AMAZON][ROW][HEADER] + 1, sheet.max_row + 1):
 		recordType = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][TYPE]) 
 		date = getCellDateString(AMAZON, sheet, row, LOCATION[AMAZON][COLUMN][DATE])
+		productSales = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][PRODUCT_SALES])
+		shippingCredits = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SHIPPING_CREDITS])
+		salesTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SALES_TAX_COLLECTED])
+		sellingFees = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SELLING_FEES])
+		total = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][TOTAL])
 
 		if recordType == ORDER:
 			city = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][CITY])
@@ -82,8 +102,7 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
 			if orderId not in orders[city]:
 				orders[city][orderId] = []
 
-			orders[city][orderId].append(AmazonOrderRecord(row, date, '')) # TADA populate cash received #READ_AMAZON_FILE
-			# TADA populate any other math necessary for cutoff and other business logic #READ_AMAZON_FILE
+			orders[city][orderId].append(AmazonOrderRecord(row, date, productSales, shippingCredits, salesTaxCollected, sellingFees, total))
 
 		else:
 			nonOrders.append(AmazonNonOrderRecord(row, date, recordType))
@@ -92,7 +111,8 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
 	orders = identifyCutOffRecords(orders) # TADA include whatever manual input values are needed #WRITE_LOGIC_FOR_CUTOFF
 
 	modifyAmazonReport(sheet, orders, nonOrders)
-	workBook.save(reportFilePath)
+	saveAmazonReport(workbook, reportFilePath)
+	workbook.save(reportFilePath)
 
 
 def populateInvoiceNumbers(orders, quickBooksRecords):
@@ -101,6 +121,11 @@ def populateInvoiceNumbers(orders, quickBooksRecords):
 
 def identifyCutOffRecords(orders):
 	return orders # TADA identify cut off records #WRITE_LOGIC_FOR_CUTOFF
+
+
+def saveAmazonReport(workbook, filePath):
+	workbook.save(filePath)
+	output('Report saved to ' + filePath)
 
 
 def modifyAmazonReport(sheet, orders, nonOrders):

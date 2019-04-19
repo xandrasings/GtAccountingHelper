@@ -31,6 +31,7 @@ ACCEPTS = {
 	}
 }
 
+SHEET = 'Sheet'
 ROW = 'Row'
 COLUMN = 'Column'
 
@@ -44,6 +45,12 @@ INVOICE_NUMBER = 'Invoice Number'
 MAX = 'Max'
 NON_ORDER_BUFFER = 'Non Order Buffer'
 ORDER_ID = 'Order ID'
+PRODUCT_SALES = 'Product Sales'
+SALES_TAX_COLLECTED = 'Sales Tax Collected'
+SELLING_FEES = 'Selling Fees'
+SHEET_1 = 'Sheet1'
+SHIPPING_CREDITS = 'Shipping Credits'
+TOTAL = 'Total'
 TYPE = 'Type'
 
 LOCATION = {
@@ -57,12 +64,18 @@ LOCATION = {
 			TYPE : 3,
 			ORDER_ID : 4,
 			CITY : 10,
+			PRODUCT_SALES : 13,
+			SHIPPING_CREDITS : 14,
+			SALES_TAX_COLLECTED : 17,
+			SELLING_FEES : 19,
+			TOTAL : 23,
 			MAX : 23,
 			INVOICE_NUMBER : 24,
 			CASH_RECEIVED : 25
 		}
 	},
 	QUICKBOOKS : {
+		SHEET : SHEET_1,
 		ROW : {
 			HEADER : 1,
 		},
