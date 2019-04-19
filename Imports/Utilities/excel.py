@@ -14,7 +14,7 @@ def loadWorkbook(fileType, filePath, readOnly = False):
 
 
 def loadSheet(workBook, fileType):
-	sheet = workBook.get_active_sheet()
+	sheet = workBook.get_active_sheet() # TADA sheet1
 	# TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
 	return sheet
 
@@ -121,7 +121,7 @@ def addNewDataColumns(sheet, orders):
 
 
 def addHeaders(sheet):
-	for header in [CASH_RECEIVED, INVOICE_NUMBER]:
+	for header in [INVOICE_NUMBER, CASH_RECEIVED]:
 		addHeader(sheet, header)
 
 
