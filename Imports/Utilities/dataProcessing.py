@@ -1,6 +1,7 @@
 from .constants import *
 from .fileManagement import *
 from .output import *
+from .sys import *
 
 def processReports():
 	filePaths = collectFilePaths()
