@@ -1,4 +1,4 @@
-# File types
+# File Information
 AMAZON = 'Amazon'
 QUICKBOOKS = 'QuickBooks'
 
@@ -7,7 +7,34 @@ FILE_TYPES = [
 	QUICKBOOKS
 ]
 
-# Amazon summary data
+ROW = 'Row'
+COLUMN = 'Column'
+
+DATE = 'Date'
+HEADER = 'Header'
+MAX = 'Max'
+NON_ORDER_BUFFER = 'Non Order Buffer'
+TYPE = 'Type'
+
+LOCATION = {
+	AMAZON : {
+		ROW : {
+			HEADER : 8,
+			NON_ORDER_BUFFER : 4
+		},
+		COLUMN : {
+			DATE : 1,
+			TYPE : 3,
+			MAX : 25
+		}
+	},
+	QUICKBOOKS : {
+		ROW : {},
+		COLUMN : {}
+	}
+}
+
+# Amazon Summary Data
 BEGINNING_BALANCE_SUBTOTAL = 'Beginning Balance Subtotal'
 ORDERS_SUBTOTAL = 'Orders Subtotal'
 REFUNDS_SUBTOTAL = 'Refunds Subtotal'
@@ -30,3 +57,4 @@ AMAZON_SUMMARY_DATA_TYPES = [
 BACK = 'back'
 FROZEN = 'frozen'
 MAIN = '__main__'
+ORDER = 'ORDER'

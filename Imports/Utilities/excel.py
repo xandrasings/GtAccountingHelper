@@ -13,7 +13,7 @@ def loadWorkbook(fileType, filePath, readOnly = False):
 
 def loadSheet(workBook, fileType):
 	sheet = workBook.get_active_sheet()
-	# TODO ACCOUNTED verify sheet formatting here based on fileType
+	# TADA verify sheet formatting here based on fileType
 	return sheet
 
 
@@ -35,7 +35,7 @@ def getCellDateString(sheet, row, column):
 
 
 def processQuickBooksReport(filePath):
-	return {} # TODO ACCOUNTED
+	return {} # TADA
 
 
 def processAmazonReport(filePath, quickBooksRecords):
@@ -45,15 +45,15 @@ def processAmazonReport(filePath, quickBooksRecords):
 	orders = {}
 	nonOrders = []
 
-	for i in range(8 + 1, sheet.max_row + 1): # TODO store start value in constant
-		recordType = getCellString(sheet, i, 3) # TODO store column index in constant
-		if recordType == 'ORDER': #TODO constant
-			pass # TODO ACCOUNTED store in orders
+	for row in range(LOCATION[AMAZON][ROW][HEADER] + 1, sheet.max_row + 1):
+		recordType = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][TYPE]) 
+		if recordType == ORDER:
+			pass # TADA ACCOUNTED store in orders
 		else:
-			nonOrders.append(AmazonNonOrderRecord(i, getCellDateString(sheet, i, 1), recordType))
+			nonOrders.append(AmazonNonOrderRecord(row, getCellDateString(sheet, row, LOCATION[AMAZON][COLUMN][DATE]), recordType))
 
 	modifyAmazonReport(sheet, orders, nonOrders)
-	workBook.save('happylilfile.xlsx')
+	workBook.save('happylilfile.xlsx') # TADA
 
 
 def modifyAmazonReport(sheet, orders, nonOrders):
@@ -63,9 +63,9 @@ def modifyAmazonReport(sheet, orders, nonOrders):
 
 
 def copyNonOrders(sheet, nonOrders):
-	row = sheet.max_row + 4 # TODO constant stuff
+	row = sheet.max_row + LOCATION[AMAZON][ROW][NON_ORDER_BUFFER]
 	for nonOrder in sorted(nonOrders):
-		for column in range(1, 25 + 1): # TODO constant stuff
+		for column in range(1, LOCATION[AMAZON][COLUMN][MAX] + 1):
 			setCellValue(sheet, row, column, getCellValue(sheet, nonOrder.getRow(), column))
 		row = row + 1
 		
