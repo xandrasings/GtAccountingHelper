@@ -6,6 +6,7 @@ from .sys import *
 def processReports():
 	filePaths = collectFilePaths()
 	amazonSummaryData = collectAmazonSummaryData()
+	summarizeUserInput(filePaths, amazonSummaryData)
 
 
 def collectFilePaths():
@@ -35,3 +36,25 @@ def getNumericDataValue(dataType):
 				return float(inputValue.replace(',',''))
 		except ValueError:
 			output('Input should be a number with no letters or symbols.')
+
+
+def summarizeUserInput(filePaths, amazonSummaryData):
+	clearScreen()
+	summarizeFilePaths(filePaths)
+	summarizeAmazonSummaryData(amazonSummaryData)
+	promptContinue()
+
+def summarizeFilePaths(filePaths):
+	for fileType in FILE_TYPES:
+		output(fileType + ' file location: ' + filePaths[fileType])
+	output()
+
+def summarizeAmazonSummaryData(amazonSummaryData):
+	for dataType in AMAZON_SUMMARY_DATA_TYPES:
+		output(dataType + ' value: $' + str(amazonSummaryData[dataType]))
+	output()
+
+def promptContinue():
+	output('Press enter to continue or \'Q\' to quit.)')
+	if prompt() == 'Q':
+		quit()
