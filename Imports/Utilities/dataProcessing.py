@@ -17,5 +17,6 @@ def collectFilePaths():
 def collectAmazonSummaryData():
 	output('Please enter the following values from the Amazon summary:')
 	amazonSummaryData = {}
-	amazonSummaryData['Beginning Balance Subtotal'] = float(prompt('Beginning Balance Subtotal','$').replace(',',''))
+	for i in AMAZON_SUMMARY_DATA_TYPES:
+		amazonSummaryData[i] = float(prompt(i,'$').replace(',',''))
 	return amazonSummaryData
