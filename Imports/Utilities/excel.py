@@ -135,20 +135,19 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
 		else:
 			nonOrders.append(AmazonNonOrderRecord(row, date, recordType))
 	
-	orders = populateInvoiceNumbers(orders, quickBooksRecords)
-	orders = identifyCutOffRecords(orders) # TADA include whatever manual input values are needed #WRITE_LOGIC_FOR_CUTOFF
+	populateInvoiceNumbers(orders, quickBooksRecords)
+	identifyCutOffRecords(orders) # TADA include whatever manual input values are needed #WRITE_LOGIC_FOR_CUTOFF
 
 	modifyAmazonReport(sheet, orders, nonOrders)
 	saveAmazonReport(workbook, reportFilePath)
 	workbook.save(reportFilePath)
 
-
 def populateInvoiceNumbers(orders, quickBooksRecords):
-	return orders # TADA populate invoice number #WRITE_LOGIC_FOR_MATCHING_TRANSACTIONS
+	pass # TADA populate invoice number #WRITE_LOGIC_FOR_MATCHING_TRANSACTIONS
 
 
 def identifyCutOffRecords(orders):
-	return orders # TADA identify cut off records #WRITE_LOGIC_FOR_CUTOFF
+	pass # TADA identify cut off records #WRITE_LOGIC_FOR_CUTOFF
 
 
 def saveAmazonReport(workbook, filePath):
@@ -158,14 +157,14 @@ def saveAmazonReport(workbook, filePath):
 
 
 def modifyAmazonReport(sheet, orders, nonOrders):
-	colorCutOffRecords(sheet, orders)
+	markCutOffRecords(sheet, orders)
 	addNewDataColumns(sheet, orders)
 	copyNonOrders(sheet, nonOrders)
 	removeNonOrders(sheet, nonOrders)
 	removeHeaderRows(sheet)
 
 
-def colorCutOffRecords(sheet, orders):
+def markCutOffRecords(sheet, orders):
 	pass # TADA color the records where cutOff = true #MARK_CUT_OFF_RECORDS
 
 
