@@ -18,11 +18,11 @@ def collectAmazonSummaryData():
 	output('Please enter the following values from the Amazon summary:')
 	amazonSummaryData = {}
 	for dataType in AMAZON_SUMMARY_DATA_TYPES:
-		amazonSummaryData[dataType] = getDataValue(dataType)
+		amazonSummaryData[dataType] = getNumericDataValue(dataType)
 	return amazonSummaryData
 
 
-def getDataValue(dataType):
+def getNumericDataValue(dataType):
 	while True:
 		inputValue = prompt(dataType,'$')
 		try:
