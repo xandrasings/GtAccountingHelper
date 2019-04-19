@@ -9,6 +9,7 @@ import sys
 
 
 def promptForFilePath(inputType, targetDirectoryPath = ''):
+	clearScreen()
 	if targetDirectoryPath == '': # the first run of this function.
 		targetDirectoryPath = getMainPath() # set the path to the main or exe path
 	

@@ -5,9 +5,7 @@ def main():
 	clearScreen()
 	output('Welcome to Glacier Tek\'s Amazon Accounting Helper.')
 	prompt('Press enter to start!')
-	processInputFile('Amazon')
-	clearScreen()
-	processInputFile('QuickBooks')
+	processReports();
 
 
 main()

@@ -1,5 +1,6 @@
 from .fileManagement import *
 from .output import *
 
-def processInputFile(inputType):
-	filePath = promptForFilePath(inputType)
+def processReports():
+	amazonFilePath = promptForFilePath('Amazon')
+	amazonFilePath = promptForFilePath('QuickBooks')
