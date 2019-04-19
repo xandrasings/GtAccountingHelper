@@ -1,4 +1,5 @@
 from .constants import *
+from .dateTime import *
 from .output import *
 from .sys import *
 
@@ -9,7 +10,7 @@ import os
 import sys
 
 
-def promptForFilePath(inputType, targetDirectoryPath = ''): # TADA modify me to work for selecting report path #SAVE_EXCEL_FILE
+def promptForFilePath(inputType, targetDirectoryPath = ''): 
 	if targetDirectoryPath == '': # the first run of this function.
 		targetDirectoryPath = getMainPath() # set the path to the main or exe path
 	
@@ -17,12 +18,14 @@ def promptForFilePath(inputType, targetDirectoryPath = ''): # TADA modify me to 
 	output('Please navigate to the desired ' + inputType + ' location.')
 	output()
 	output('Searching: ' + targetDirectoryPath) # give the user path context
-	validOptions = getValidPathOptions(targetDirectoryPath) # get every dir and excel file
+	validOptions = getValidPathOptions(inputType, targetDirectoryPath) # get every valid dir and excel file 
 	optionName = getOptionName(validOptions) # let user pick dir or excel file
+	if optionName == CURRENT_DIRECTORY: # current directory selected, escape
+		return targetDirectoryPath
 	optionPath = extendPath(targetDirectoryPath, optionName) # extend the target path
-	if isValidDirectory(optionName): # if it's a directory, recurse
+	if isValidDirectory(optionName): # if it's a directory (not the current dir) recurse
 		return promptForFilePath(inputType, optionPath)
-	else: # otherwise, excel file is selected.
+	else: # otherwise we've selected an excel file
 		return optionPath
 
 
@@ -34,9 +37,9 @@ def getRealPath(path):
 	return os.path.realpath(path)
 
 
-def getValidPathOptions(targetDirectoryPath):
+def getValidPathOptions(inputType, targetDirectoryPath):
 	pathContent = listdir(targetDirectoryPath)
-	validOptions = filterPathOptions(pathContent)
+	validOptions = filterPathOptions(inputType, pathContent)
 
 	if len(validOptions) == 0:
 		output('No valid excel files found here!')
@@ -44,11 +47,17 @@ def getValidPathOptions(targetDirectoryPath):
 	return validOptions
 
 
-def filterPathOptions(pathContent):
+def filterPathOptions(inputType, pathContent):
 	validOptions = []
 
+	if ACCEPTS[inputType][SELF]:
+		validOptions.append(CURRENT_DIRECTORY)
+
 	for item in list(pathContent):
-		if (isValidDirectory(item) or isValidExcelFile(item)):
+		if (
+			(ACCEPTS[inputType][DIRECTORY] and isValidDirectory(item)) or
+			(ACCEPTS[inputType][EXCEL] and isValidExcelFile(item))
+		):
 			validOptions.append(item)
 
 	return validOptions
@@ -115,8 +124,13 @@ def getPathIndex(validOptions):
 
 
 def extendPath(filePath, extension):
-	if extension == 'back':
+	if extension == BACK:
 		return os.path.dirname(filePath)
 	else:
 		return os.path.join(filePath, extension)
+
+
+def modifyFileName(reportFilePath, amazonFilePath):
+	return extendPath(reportFilePath, os.path.splitext(os.path.basename(amazonFilePath))[0] + FILE_NAME_MODIFIER + getDateTimeAsFilePathSegment() + FILE_NAME_SUFFIX)
+
 

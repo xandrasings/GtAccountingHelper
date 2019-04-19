@@ -9,6 +9,28 @@ FILE_TYPES = [
 	REPORT
 ]
 
+SELF = 'Self'
+DIRECTORY = 'Directory'
+EXCEL = 'Excel'
+
+ACCEPTS = {
+	AMAZON : {
+		SELF : False,
+		DIRECTORY : True,
+		EXCEL : True
+	},
+	QUICKBOOKS : {
+		SELF : False,
+		DIRECTORY : True,
+		EXCEL : True
+	},
+	REPORT : {
+		SELF : True,
+		DIRECTORY : True,
+		EXCEL : False
+	}
+}
+
 ROW = 'Row'
 COLUMN = 'Column'
 
@@ -77,6 +99,9 @@ AMAZON_SUMMARY_DATA_TYPES = [
 
 # Miscellanea
 BACK = 'back'
+CURRENT_DIRECTORY = 'Current Directory'
+FILE_NAME_MODIFIER = '_updated_'
+FILE_NAME_SUFFIX = '.xlsx'
 FROZEN = 'frozen'
 MAIN = '__main__'
 ORDER = 'ORDER'

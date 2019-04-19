@@ -93,7 +93,7 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, reportFilePath):
 	orders = identifyCutOffRecords(orders) # TADA include whatever manual input values are needed #WRITE_LOGIC_FOR_CUTOFF
 
 	modifyAmazonReport(sheet, orders, nonOrders)
-	workBook.save('happylilfile.xlsx') # TADA save based on given reportFilePath #SAVE_EXCEL_FILE
+	workBook.save(reportFilePath)
 
 
 def populateInvoiceNumbers(orders, quickBooksRecords):
@@ -113,7 +113,7 @@ def modifyAmazonReport(sheet, orders, nonOrders):
 
 
 def colorCutOffRecords(sheet, orders):
-	pass # TADA color the records where cutOff = true
+	pass # TADA color the records where cutOff = true #MARK_CUT_OFF_RECORDS
 
 
 def addNewDataColumns(sheet, orders):
