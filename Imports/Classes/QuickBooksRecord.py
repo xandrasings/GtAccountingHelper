@@ -1,17 +1,17 @@
-class AmazonRecord:
-	def __init__(self, date, invoice, total):
+class QuickBooksRecord:
+	def __init__(self, date, invoiceNumber, debit, credit):
 		self.date = date
-		self.invoice = invoice
-		self.total = total
+		self.invoiceNumber = invoiceNumber
+		self.total = debit - credit
 
 	def getDate(self):
 		return self.date
 
-	def getInvoice(self):
-		return self.invoice
+	def getInvoiceNumber(self):
+		return self.invoiceNumber
 
 	def getTotal(self):
-		return self.total
+		return self.total 
 
 	def summarize(self):
-		return "{date: " + str(self.date) + ", invoice: " + self.invoice + ", total: " + str(self.total) + "}"
+		return "{date: " + str(self.date) + ", invoice number: " + self.invoiceNumber + ", total: " + str(self.total) + "}"

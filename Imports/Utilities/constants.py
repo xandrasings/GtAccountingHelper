@@ -12,9 +12,11 @@ COLUMN = 'Column'
 
 CASH_RECEIVED = 'Cash Received'
 CITY = 'City'
+CREDIT = 'Credit'
 DATE = 'Date'
+DEBIT = 'Debit'
 HEADER = 'Header'
-INVOICE = 'Invoice'
+INVOICE_NUMBER = 'Invoice Number'
 MAX = 'Max'
 NON_ORDER_BUFFER = 'Non Order Buffer'
 ORDER_ID = 'Order ID'
@@ -33,12 +35,20 @@ LOCATION = {
 			CITY : 10,
 			MAX : 23,
 			CASH_RECEIVED : 24,
-			INVOICE : 25
+			INVOICE_NUMBER : 25
 		}
 	},
 	QUICKBOOKS : {
-		ROW : {},
-		COLUMN : {}
+		ROW : {
+			HEADER : 1,
+		},
+		COLUMN : {
+			CITY : 23,
+			CREDIT : 21,
+			DATE : 7,
+			DEBIT : 19,
+			INVOICE_NUMBER : 9
+		}
 	}
 }
 

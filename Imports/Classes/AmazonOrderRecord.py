@@ -4,13 +4,13 @@ class AmazonOrderRecord(AmazonRecord):
 	def __init__(self, row, date, cashReceived):
 		super().__init__(row, date)
 		self.cashReceived = cashReceived
-		self.invoice = ''
+		self.invoiceNumber = ''
 
 	def getCashReceived(self):
 		return self.cashReceived
 
-	def getInvoice(self):
-		return self.invoice
+	def getInvoiceNumber(self):
+		return self.invoiceNumber
 
 	def summarize(self):
-		return "{row: " + str(self.row) + ", date: " + str(self.date) + ", cash received: " + str(self.cashReceived) +", invoice: " + self.invoice + "}"
+		return "{row: " + str(self.row) + ", date: " + str(self.date) + ", cash received: " + str(self.cashReceived) +", invoice number: " + self.invoiceNumber + "}"
