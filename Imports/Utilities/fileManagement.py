@@ -9,12 +9,12 @@ import sys
 
 
 def promptForFilePath(inputType, targetDirectoryPath = ''):
-	clearScreen()
 	if targetDirectoryPath == '': # the first run of this function.
 		targetDirectoryPath = getMainPath() # set the path to the main or exe path
 	
 	clearScreen()
 	output('Please navigate to the ' + inputType + ' report.')
+	output()
 	output('searching: ' + targetDirectoryPath) # give the user path context
 	validOptions = getValidPathOptions(targetDirectoryPath) # get every dir and excel file
 	optionName = getOptionName(validOptions) # let user pick dir or excel file
@@ -22,10 +22,6 @@ def promptForFilePath(inputType, targetDirectoryPath = ''):
 	if isValidDirectory(optionName): # if it's a directory, recurse
 		return promptForFilePath(inputType, optionPath)
 	else: # otherwise, excel file is selected.
-		clearScreen()
-		output(inputType + ' report selected:')
-		output(optionPath)
-		prompt('Press enter to continue.')
 		return optionPath
 
 

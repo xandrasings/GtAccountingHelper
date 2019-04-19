@@ -17,6 +17,8 @@ def collectFilePaths():
 
 def collectAmazonSummaryData():
 	output('Please enter the following values from the Amazon summary:')
+	output('(Press \'Q\' to quit.)')
+	output()
 	amazonSummaryData = {}
 	for dataType in AMAZON_SUMMARY_DATA_TYPES:
 		amazonSummaryData[dataType] = getNumericDataValue(dataType)
