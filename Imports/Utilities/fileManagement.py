@@ -1,3 +1,4 @@
+from .constants import *
 from .output import *
 from .sys import *
 
@@ -15,7 +16,7 @@ def promptForFilePath(inputType, targetDirectoryPath = ''):
 	clearScreen()
 	output('Please navigate to the ' + inputType + ' report.')
 	output()
-	output('searching: ' + targetDirectoryPath) # give the user path context
+	output('Searching: ' + targetDirectoryPath) # give the user path context
 	validOptions = getValidPathOptions(targetDirectoryPath) # get every dir and excel file
 	optionName = getOptionName(validOptions) # let user pick dir or excel file
 	optionPath = extendPath(targetDirectoryPath, optionName) # extend the target path
@@ -26,7 +27,7 @@ def promptForFilePath(inputType, targetDirectoryPath = ''):
 
 
 def getMainPath():
-	return getRealPath(os.path.dirname(sys.executable) if (hasattr(sys, "frozen") or imp.is_frozen("__main__")) else os.path.dirname(sys.argv[0]))
+	return getRealPath(os.path.dirname(sys.executable) if (hasattr(sys, FROZEN) or imp.is_frozen(MAIN)) else os.path.dirname(sys.argv[0]))
 
 
 def getRealPath(path):
@@ -54,7 +55,7 @@ def filterPathOptions(pathContent):
 
 
 def isValidDirectory(item):
-	return item == 'back' or '.' not in item # must be a dir
+	return item == BACK or '.' not in item # must be a dir
 
 
 def isValidExcelFile(item):
@@ -72,7 +73,7 @@ def isValidExcelFile(item):
 def getOptionName(validOptions):
 	optionIndex = solicitPathOptionIndex(validOptions)
 	if optionIndex == -1:
-		return 'back'
+		return BACK
 	else:
 		return validOptions[optionIndex]
 
