@@ -128,11 +128,12 @@ LOCATION = {
 			HEADER : 1,
 		},
 		COLUMN : {
-			CITY : 23,
-			CREDIT : 21,
 			DATE : 7,
+			INVOICE_NUMBER : 9,
 			DEBIT : 19,
-			INVOICE_NUMBER : 9
+			CREDIT : 21,
+			CITY : 23,
+			MAX : 25
 		},
 		HEADER : {
 			5 : TYPE,

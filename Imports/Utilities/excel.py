@@ -37,7 +37,10 @@ def verifySheetFormatting(fileType, sheet):
 	verifyHeaderContent(fileType, sheet)
 
 def verifyColumnMax(fileType, sheet):
-	pass # TADA verify sheet formatting here based on fileType #READ_AMAZON_FILE #READ_QUICKBOOKS_FILE
+	actualColumnMax = sheet.max_column
+	expectedColumnMax = LOCATION[fileType][COLUMN][MAX]
+	if actualColumnMax != expectedColumnMax:
+		quit(fileType + ' workbook had ' + str(actualColumnMax) + ' column max instead of expected value ' + str(expectedColumnMax) + '.')
 
 def verifyHeaderContent(fileType, sheet):
 	row = LOCATION[fileType][ROW][HEADER]
@@ -150,6 +153,7 @@ def identifyCutOffRecords(orders):
 
 def saveAmazonReport(workbook, filePath):
 	workbook.save(filePath)
+	clearScreen()
 	output('Report saved to ' + filePath)
 
 
