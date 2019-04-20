@@ -177,7 +177,7 @@ def identifyEstimatedCutOffRecords(orders, unavailableBalance):
 		if taxedTotal < unavailableBalance:
 			unavailableBalance = unavailableBalance - taxedTotal
 		else: 
-			return CutOffSplit(order.getRow(), round(unavailableBalance,2))
+			return CutOffSplit(order.getRow(), order.getTaxedTotal(), round(unavailableBalance,2))
 	return None
 
 
@@ -227,7 +227,7 @@ def markCutOffSplit(sheet, cutOffSplit):
 	if cutOffSplit != None:
 		row = cutOffSplit.getRow()
 		column = LOCATION[AMAZON][COLUMN][CUT_OFF_SPLIT]
-		value = '* partial unavailable balance of ' + str(cutOffSplit.getValue()) + " *"
+		value = '* partial unavailable balance of $' + str(cutOffSplit.getUnavailableBalance()) + ' out of $' + str(cutOffSplit.getTaxedTotal()) + '*' 
 		
 		setCellValue(sheet, row, column, value)
 		setCellColor(sheet, row, column, CUT_OFF_COLOR)
