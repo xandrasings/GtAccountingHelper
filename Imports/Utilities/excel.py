@@ -183,10 +183,10 @@ def identifyEstimatedCutOffRecords(orders, unavailableBalance):
 
 def attemptCutOff(orders, unavailableBalance):
 	pot = []
-	for order in orders[::-1]:
+	for order in orders:
 		pot.append(order.getTaxedTotal())
 		goal = round(sum(pot) - unavailableBalance, 2)
-
+		
 		if goal == 0:
 			return pot
 		elif goal > 0:
