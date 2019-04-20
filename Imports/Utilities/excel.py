@@ -7,6 +7,7 @@ from ..Classes.QuickBooksRecord import *
 
 from datetime import datetime
 from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
 
 import itertools
 
@@ -52,10 +53,6 @@ def verifyHeaderContent(fileType, sheet):
 			quit(fileType + ' workbook did not have expected column header ' + expectedContent + ' in row ' + str(row) + ' column ' + str(column) + '.')
 
 
-def setCellValue(sheet, row, column, value):
-	sheet.cell(row = row, column = column).value = value;
-
-
 def getCellValue(sheet, row, column):
 	try:
 		return sheet.cell(row = row, column = column).value
@@ -87,6 +84,15 @@ def getCellDateString(fileType, sheet, row, column):
 		return datetime.strptime(dateString[0 : dateString.index(',') + 6], '%b %d, %Y')
 	except:
 		quit('Could not convert date string ' + dateString + ' to datetime.')
+
+
+def setCellValue(sheet, row, column, value):
+	sheet.cell(row = row, column = column).value = value;
+
+
+def setCellColor(sheet, row, column, color):
+	fill = PatternFill(SOLID, fgColor = color)
+	sheet.cell(row = row, column = column).fill = fill
 
 
 def processQuickBooksReport(filePath):
@@ -133,7 +139,7 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, r
 	populateInvoiceNumbers(orders, quickBooksRecords)
 	cutOffSplit = identifyCutOffRecords(orders, unavailableBalance)
 
-	modifyAmazonReport(sheet, orders, nonOrders)
+	modifyAmazonReport(sheet, orders, nonOrders, cutOffSplit)
 	saveAmazonReport(workbook, reportFilePath)
 	workbook.save(reportFilePath)
 
@@ -198,8 +204,9 @@ def saveAmazonReport(workbook, filePath):
 	output('Report saved to ' + filePath)
 
 
-def modifyAmazonReport(sheet, orders, nonOrders):
+def modifyAmazonReport(sheet, orders, nonOrders, cutOffSplit):
 	markCutOffRecords(sheet, orders)
+	markCutOffSplit(sheet, cutOffSplit)
 	addNewDataColumns(sheet, orders)
 	copyNonOrders(sheet, nonOrders)
 	removeNonOrders(sheet, nonOrders)
@@ -208,6 +215,16 @@ def modifyAmazonReport(sheet, orders, nonOrders):
 
 def markCutOffRecords(sheet, orders):
 	pass # TADA color the records where cutOff = true #MARK_CUT_OFF_RECORDS
+
+
+def markCutOffSplit(sheet, cutOffSplit):
+	if cutOffSplit != None:
+		row = cutOffSplit.getRow()
+		column = LOCATION[AMAZON][COLUMN][CUT_OFF_SPLIT]
+		value = '* partial unavailable balance of ' + str(cutOffSplit.getValue()) + " *"
+		
+		setCellValue(sheet, row, column, value)
+		setCellColor(sheet, row, column, CUT_OFF_COLOR)
 
 
 def addNewDataColumns(sheet, orders):

@@ -40,6 +40,7 @@ CASH_RECEIVED = 'Cash Received'
 CITY = 'City'
 CLR = 'Clr'
 CREDIT = 'Credit'
+CUT_OFF_SPLIT = 'Cut Off Split'
 DATE = 'Date'
 DATE_TIME = 'date/time'
 DESCRIPTION = 'description'
@@ -94,7 +95,8 @@ LOCATION = {
 			TOTAL : 23,
 			MAX : 23,
 			INVOICE_NUMBER : 24,
-			CASH_RECEIVED : 25
+			CASH_RECEIVED : 25,
+			CUT_OFF_SPLIT : 26
 		},
 		HEADER : {
 			1 : DATE_TIME,
@@ -161,9 +163,11 @@ AMAZON_SUMMARY_DATA_TYPES = [
 # Miscellanea
 BACK = 'back'
 CURRENT_DIRECTORY = 'Current Directory'
+CUT_OFF_COLOR = 'DDDDDD'
 DROP_COUNT_LIMIT = 6
 FILE_NAME_MODIFIER = '_updated_'
 FILE_NAME_SUFFIX = '.xlsx'
 FROZEN = 'frozen'
 MAIN = '__main__'
 ORDER = 'ORDER'
+SOLID = 'solid'
