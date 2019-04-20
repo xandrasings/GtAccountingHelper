@@ -8,6 +8,8 @@ from ..Classes.QuickBooksRecord import *
 from datetime import datetime
 from openpyxl import load_workbook
 
+import itertools
+
 
 def loadWorkbook(fileType, filePath, readOnly = False):
 	try:
@@ -140,10 +142,54 @@ def populateInvoiceNumbers(orders, quickBooksRecords):
 
 
 def identifyCutOffRecords(orders, unavailableBalance):
-	pass # TADA identify cut off records #WRITE_LOGIC_FOR_CUTOFF
-	# TADA if able to sort out the cut off records, turn them True and return none
-	# TADA else sum array values from bottom up until value is above unavailable balance, set them to cutoffTrue
-	# TADA mark row and calculate cutoff, return as CutOffSplit
+	orders.sort(reverse = True)
+	if unavailableBalance > 0:
+		cutOffValues = attemptCutOff(orders, unavailableBalance)
+
+		if len(cutOffValues) == 0:
+			return identifyEstimatedCutOffRecords(orders, unavailableBalance)
+		else:
+			identifyExactCutOffRecords(orders, cutOffValues)
+			return None
+
+
+def identifyExactCutOffRecords(orders, cutOffValues):
+	for value in cutOffValues:
+		for order in orders:
+			if order.getTaxedTotal() == value and not order.isCutOff():
+				order.setCutOff()
+				break
+
+
+def identifyEstimatedCutOffRecords(orders, unavailableBalance):
+	for order in orders:
+		taxedTotal = order.getTaxedTotal()
+		order.setCutOff()
+		if taxedTotal < unavailableBalance:
+			unavailableBalance = unavailableBalance - taxedTotal
+		else: 
+			return CutOffSplit(order.getRow(), round(unavailableBalance,2))
+	return None
+
+
+def attemptCutOff(orders, unavailableBalance):
+	pot = []
+	for order in orders[::-1]:
+		pot.append(order.getTaxedTotal())
+		goal = round(sum(pot) - unavailableBalance, 2)
+
+		if goal == 0:
+			return pot
+		elif goal > 0:
+			dropCountLimit = min(len(pot), DROP_COUNT_LIMIT)
+			for dropCount in range(1, dropCountLimit):
+				for drops in itertools.combinations(pot, dropCount):
+					if round(sum(drops), 2) == goal:
+						drops = list(drops)
+						for drop in drops:
+							pot.remove(drop)
+						return pot
+	return []
 
 
 def saveAmazonReport(workbook, filePath):

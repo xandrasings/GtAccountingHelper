@@ -161,6 +161,7 @@ AMAZON_SUMMARY_DATA_TYPES = [
 # Miscellanea
 BACK = 'back'
 CURRENT_DIRECTORY = 'Current Directory'
+DROP_COUNT_LIMIT = 6
 FILE_NAME_MODIFIER = '_updated_'
 FILE_NAME_SUFFIX = '.xlsx'
 FROZEN = 'frozen'
