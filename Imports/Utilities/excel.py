@@ -94,6 +94,9 @@ def setCellColor(sheet, row, column, color):
 	fill = PatternFill(SOLID, fgColor = color)
 	sheet.cell(row = row, column = column).fill = fill
 
+def setRowColor(fileType, sheet, row, color):
+	for column in range (LOCATION[fileType][COLUMN][MIN], LOCATION[fileType][COLUMN][NEW_MAX] + 1):
+		setCellColor(sheet, row, column, color)
 
 def processQuickBooksReport(filePath):
 	workbook = loadWorkbook(QUICKBOOKS, filePath, True)
@@ -214,6 +217,9 @@ def modifyAmazonReport(sheet, orders, nonOrders, cutOffSplit):
 
 
 def markCutOffRecords(sheet, orders):
+	for order in orders:
+		if order.isCutOff():
+			setRowColor(AMAZON, sheet, order.getRow(), CUT_OFF_COLOR)
 	pass # TADA color the records where cutOff = true #MARK_CUT_OFF_RECORDS
 
 

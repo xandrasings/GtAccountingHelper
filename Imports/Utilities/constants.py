@@ -54,6 +54,8 @@ MARKETPLACE = 'marketplace'
 MARKETPLACE_FACILITATOR_TAX = 'Marketplace Facilitator Tax'
 MAX = 'Max'
 MEMO = 'Memo'
+MIN = 'Min'
+NEW_MAX = 'New Max'
 NON_ORDER_BUFFER = 'Non Order Buffer'
 NUM = 'Num'
 ORDER_CITY = 'order city'
@@ -84,6 +86,7 @@ LOCATION = {
 			NON_ORDER_BUFFER : 4
 		},
 		COLUMN : {
+			MIN : 1,
 			DATE : 1,
 			TYPE : 3,
 			ORDER_ID : 4,
@@ -96,6 +99,7 @@ LOCATION = {
 			MAX : 23,
 			INVOICE_NUMBER : 24,
 			CASH_RECEIVED : 25,
+			NEW_MAX : 25,
 			CUT_OFF_SPLIT : 26
 		},
 		HEADER : {
