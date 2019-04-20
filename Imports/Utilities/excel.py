@@ -255,10 +255,11 @@ def addNewData(sheet, orders):
 
 def copyNonOrders(sheet, nonOrders):
 	row = sheet.max_row + LOCATION[AMAZON][ROW][NON_ORDER_BUFFER]
+	setCellValue(sheet, row, LOCATION[AMAZON][COLUMN][MIN], 'Non-Order Records:')
 	for nonOrder in sorted(nonOrders):
-		for column in range(1, LOCATION[AMAZON][COLUMN][MAX] + 1):
-			setCellValue(sheet, row, column, getCellValue(sheet, nonOrder.getRow(), column))
 		row = row + 1
+		for column in range(LOCATION[AMAZON][COLUMN][MIN], LOCATION[AMAZON][COLUMN][MAX] + 1):
+			setCellValue(sheet, row, column, getCellValue(sheet, nonOrder.getRow(), column))
 		
 
 def removeNonOrders(sheet, nonOrders):
