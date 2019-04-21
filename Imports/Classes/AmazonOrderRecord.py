@@ -7,6 +7,7 @@ class AmazonOrderRecord(AmazonRecord):
 		self.city = city
 		self.invoiceNumber = ''
 		self.cashReceived = productSales + shippingCredits + sellingFees
+		self.matchSubtotal = productSales + shippingCredits + salesTaxCollected
 		self.taxedTotal = salesTaxCollected + total
 		self.cutOff = False
 
@@ -28,14 +29,20 @@ class AmazonOrderRecord(AmazonRecord):
 	def getCashReceived(self):
 		return self.cashReceived
 
+	def getMatchSubtotal(self):
+		return self.matchSubtotal
+
 	def getTaxedTotal(self):
 		return self.taxedTotal
 
 	def isCutOff(self):
 		return self.cutOff
 
+	def setInvoiceNumber(self, invoiceNumber):
+		self.invoiceNumber = invoiceNumber
+
 	def setCutOff(self):
 		self.cutOff = True
 
 	def summarize(self):
-		return "{order id: " + str(self.orderId) + ", city: " + str(self.city) + ", row: " + str(self.row) + ", date: " + str(self.date) + ", invoice number: " + self.invoiceNumber + ", cash received: " + str(self.cashReceived) + ", taxed total: " + str(self.taxedTotal) + ", cut off: " + str(self.cutOff) + "}"
+		return "{order id: " + str(self.orderId) + ", city: " + str(self.city) + ", row: " + str(self.row) + ", date: " + str(self.date) + ", invoice number: " + self.invoiceNumber + ", cash received: " + str(self.cashReceived) + ", match subtotal: " + str(self.matchSubtotal) + ", taxed total: " + str(self.taxedTotal) + ", cut off: " + str(self.cutOff) + "}"

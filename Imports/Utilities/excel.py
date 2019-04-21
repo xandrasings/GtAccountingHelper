@@ -1,4 +1,5 @@
 from .constants import *
+from .dateTime import *
 from .fileManagement import *
 from ..Classes.AmazonNonOrderRecord import *
 from ..Classes.AmazonOrderRecord import *
@@ -146,6 +147,7 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, r
 	saveAmazonReport(workbook, reportFilePath)
 	workbook.save(reportFilePath)
 
+
 def populateInvoiceNumbers(amazonOrderRecords, quickBooksRecords):
 	orderBreakDown = {}
 	for amazonOrder in amazonOrderRecords:
@@ -157,12 +159,12 @@ def populateInvoiceNumbers(amazonOrderRecords, quickBooksRecords):
 	amazonDetailedBreakdown = {}
 	for orderId, amazonOrderRecords in orderBreakDown.items():
 		city = amazonOrderRecords[0].getCity()
-		taxedTotal = round(sum(amazonOrder.getTaxedTotal() for amazonOrder in amazonOrderRecords), 2)
+		matchSubtotal = round(sum(amazonOrder.getMatchSubtotal() for amazonOrder in amazonOrderRecords), 2)
 		if city not in amazonDetailedBreakdown:
 			amazonDetailedBreakdown[city] = {}
-		if taxedTotal not in amazonDetailedBreakdown[city]:
-			amazonDetailedBreakdown[city][taxedTotal] = []
-		amazonDetailedBreakdown[city][taxedTotal].append(amazonOrderRecords)
+		if matchSubtotal not in amazonDetailedBreakdown[city]:
+			amazonDetailedBreakdown[city][matchSubtotal] = []
+		amazonDetailedBreakdown[city][matchSubtotal].append(amazonOrderRecords)
 
 	quickBooksDetailedBreakdown = {}
 	for quickBooksRecord in quickBooksRecords:
@@ -177,17 +179,36 @@ def populateInvoiceNumbers(amazonOrderRecords, quickBooksRecords):
 	for city, totalBreakdown in amazonDetailedBreakdown.items():
 		for total, amazonOrderGroups in totalBreakdown.items():
 			try:
-				matchCount = len(amazonOrderGroups)
 				quickBooksOrders = quickBooksDetailedBreakdown[city][total]
-				pairings = [zip(x,amazonOrderGroups) for x in itertools.permutations(quickBooksOrders, matchCount)]
+				matchCount = len(amazonOrderGroups)
+				pairings = []
+				for quickBooksMatches in itertools.permutations(quickBooksOrders, matchCount):
+					pairings.append(quickBooksMatches)
 
-				for pairing in pairings:
-					editDistance = 20 * matchCount
-					for quickBooksMatch, amazonMatches in pairing:
-						pass # TODO 
-			except:
-				pass # TODO
+				bestEditDistance = 20 * matchCount
+				for quickBookMatches in pairings:
+					newEditDistance = 0
+					for i in range(0, matchCount):
+						newEditDistance = newEditDistance + calculateMatchEditDistance(quickBookMatches[i], amazonOrderGroups[i])
+					if newEditDistance < bestEditDistance:
+						bestEditDistance = newEditDistance
+						for i in range(0, matchCount):
+							for amazonOrder in amazonOrderGroups[i]:
+								amazonOrder.setInvoiceNumber(quickBookMatches[i].getInvoiceNumber())
+			except KeyError:
+				output('Key error for city ' + city + ' and total ' + str(total))
 				break
+			except:
+				break
+
+
+def calculateMatchEditDistance(quickBooksMatch, amazonMatches):
+	return calculateDateEditDistance(quickBooksMatch.getDate(), amazonMatches[0].getDate())
+
+
+def calculateDateEditDistance(date1, date2):
+	subtractDay(date1, date2)
+	return abs(subtractDay(date1, date2))
 
 
 def identifyCutOffRecords(orders, unavailableBalance):
