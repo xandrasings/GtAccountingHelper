@@ -16,6 +16,12 @@ class AmazonOrderRecord(AmazonRecord):
 	def __lt__(self, other):
 		return self.row < other.row
 
+	def getOrderId(self):
+		return self.orderId
+
+	def getCity(self):
+		return self.city
+
 	def getInvoiceNumber(self):
 		return self.invoiceNumber
 
@@ -32,4 +38,4 @@ class AmazonOrderRecord(AmazonRecord):
 		self.cutOff = True
 
 	def summarize(self):
-		return "{row: " + str(self.row) + ", date: " + str(self.date) + ", invoice number: " + self.invoiceNumber + ", cash received: " + str(self.cashReceived) + ", taxed total: " + str(self.taxedTotal) + ", cut off: " + str(self.cutOff) + "}"
+		return "{order id: " + str(self.orderId) + ", city: " + str(self.city) + ", row: " + str(self.row) + ", date: " + str(self.date) + ", invoice number: " + self.invoiceNumber + ", cash received: " + str(self.cashReceived) + ", taxed total: " + str(self.taxedTotal) + ", cut off: " + str(self.cutOff) + "}"

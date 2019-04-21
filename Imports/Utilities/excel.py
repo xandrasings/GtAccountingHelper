@@ -146,8 +146,29 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, r
 	saveAmazonReport(workbook, reportFilePath)
 	workbook.save(reportFilePath)
 
-def populateInvoiceNumbers(orders, quickBooksRecords):
-	pass # TADA populate invoice number #WRITE_LOGIC_FOR_MATCHING_TRANSACTIONS
+def populateInvoiceNumbers(amazonOrderRecords, quickBooksRecords):
+	orderBreakDown = {}
+	for amazonOrder in amazonOrderRecords:
+		orderId = amazonOrder.getOrderId()
+		if orderId not in orderBreakDown:
+			orderBreakDown[orderId] = []
+		orderBreakDown[orderId].append(amazonOrder)
+
+	# DONE orders to hashmap {order id : [object]}
+	# loop through hashmap and based on sum[object.total]  for a given order id,
+	# populate {object1.city : {total : [[objects of a given order id that add to total]]}}
+
+	# invoices to hashmap {city: {total : object}}
+
+	# create master perm list
+	# for each city in order map
+		# for each total in order map
+			# here is a list of list of order ids. each inner list adds to the total
+			# use itertools. permutations https://stackoverflow.com/questions/12935194/combinations-between-two-lists
+			# store first perm and its edit distance. (if exists! or fail out for this city/total)
+			# loop through rest of each perm replacing ^ if better edit distance
+		# DONT add the permutation to a master list
+		# instead, take best permutation if it exists, and update records of Order based on matching 
 
 
 def identifyCutOffRecords(orders, unavailableBalance):
