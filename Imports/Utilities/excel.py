@@ -104,7 +104,7 @@ def processQuickBooksReport(filePath):
 
 	invoices = []
 
-	for row in range(LOCATION[QUICKBOOKS][ROW][HEADER] + 1, sheet.max_row + 1):
+	for row in range(LOCATION[QUICKBOOKS][ROW][HEADER] + 2, sheet.max_row + 1): # TODO 
 		date = getCellValue(sheet, row, LOCATION[QUICKBOOKS][COLUMN][DATE])
 		invoiceNumber = getCellString(sheet, row, LOCATION[QUICKBOOKS][COLUMN][INVOICE_NUMBER])
 		city = getCellString(sheet, row, LOCATION[QUICKBOOKS][COLUMN][CITY])
@@ -164,21 +164,15 @@ def populateInvoiceNumbers(amazonOrderRecords, quickBooksRecords):
 			amazonDetailedBreakdown[city][taxedTotal] = []
 		amazonDetailedBreakdown[city][taxedTotal].append(amazonOrderRecords)
 
-	# DONE orders to hashmap {order id : [object]}
-	# DONE loop through hashmap and based on sum[object.total]  for a given order id,
-	# DONE populate {object1.city : {total : [[objects of a given order id that add to total]]}}
-
-	# invoices to hashmap {city: {total : object}}
-
-	# create master perm list
-	# for each city in order map
-		# for each total in order map
-			# here is a list of list of order ids. each inner list adds to the total
-			# use itertools. permutations https://stackoverflow.com/questions/12935194/combinations-between-two-lists
-			# store first perm and its edit distance. (if exists! or fail out for this city/total)
-			# loop through rest of each perm replacing ^ if better edit distance
-		# DONT add the permutation to a master list
-		# instead, take best permutation if it exists, and update records of Order based on matching 
+	quickBooksDetailedBreakdown = {}
+	for quickBooksRecord in quickBooksRecords:
+		city = quickBooksRecord.getCity()
+		total = quickBooksRecord.getTotal()
+		if city not in quickBooksDetailedBreakdown:
+			quickBooksDetailedBreakdown[city] = {}
+		if total not in quickBooksDetailedBreakdown[city]:
+			quickBooksDetailedBreakdown[city][total] = []
+		quickBooksDetailedBreakdown[city][total].append(quickBooksRecord)
 
 
 def identifyCutOffRecords(orders, unavailableBalance):
