@@ -174,6 +174,21 @@ def populateInvoiceNumbers(amazonOrderRecords, quickBooksRecords):
 			quickBooksDetailedBreakdown[city][total] = []
 		quickBooksDetailedBreakdown[city][total].append(quickBooksRecord)
 
+	for city, totalBreakdown in amazonDetailedBreakdown.items():
+		for total, amazonOrderGroups in totalBreakdown.items():
+			try:
+				matchCount = len(amazonOrderGroups)
+				quickBooksOrders = quickBooksDetailedBreakdown[city][total]
+				pairings = [zip(x,amazonOrderGroups) for x in itertools.permutations(quickBooksOrders, matchCount)]
+
+				for pairing in pairings:
+					editDistance = 20 * matchCount
+					for quickBooksMatch, amazonMatches in pairing:
+						pass # TODO 
+			except:
+				pass # TODO
+				break
+
 
 def identifyCutOffRecords(orders, unavailableBalance):
 	orders.sort(reverse = True)
