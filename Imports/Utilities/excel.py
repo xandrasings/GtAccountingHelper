@@ -154,9 +154,19 @@ def populateInvoiceNumbers(amazonOrderRecords, quickBooksRecords):
 			orderBreakDown[orderId] = []
 		orderBreakDown[orderId].append(amazonOrder)
 
+	amazonDetailedBreakdown = {}
+	for orderId, amazonOrderRecords in orderBreakDown.items():
+		city = amazonOrderRecords[0].getCity()
+		taxedTotal = round(sum(amazonOrder.getTaxedTotal() for amazonOrder in amazonOrderRecords), 2)
+		if city not in amazonDetailedBreakdown:
+			amazonDetailedBreakdown[city] = {}
+		if taxedTotal not in amazonDetailedBreakdown[city]:
+			amazonDetailedBreakdown[city][taxedTotal] = []
+		amazonDetailedBreakdown[city][taxedTotal].append(amazonOrderRecords)
+
 	# DONE orders to hashmap {order id : [object]}
-	# loop through hashmap and based on sum[object.total]  for a given order id,
-	# populate {object1.city : {total : [[objects of a given order id that add to total]]}}
+	# DONE loop through hashmap and based on sum[object.total]  for a given order id,
+	# DONE populate {object1.city : {total : [[objects of a given order id that add to total]]}}
 
 	# invoices to hashmap {city: {total : object}}
 
