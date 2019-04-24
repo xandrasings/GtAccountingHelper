@@ -6,4 +6,5 @@ def quit(text = ''):
 	if text != '':
 		output(text)
 	output('Exiting the Accounting Helper!')
+	prompt('Press enter to exit.')
 	sys.exit()
