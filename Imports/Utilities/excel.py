@@ -141,7 +141,8 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, b
 			nonOrders.append(AmazonNonOrderRecord(row, date, recordType))
 	
 	populateInvoiceNumbers(orders, quickBooksRecords)
-	cutOffSplit = identifyCutOffRecords(orders, unavailableBalance) if balanceAction else None
+	orders.sort(reverse = True)
+	cutOffSplit = identifyCutOffRecords(orders, unavailableBalance) if balanceAction else identifyEstimatedCutOffRecords(orders, unavailableBalance)
 
 	modifyAmazonReport(sheet, orders, nonOrders, cutOffSplit)
 	saveAmazonReport(workbook, reportFilePath)
@@ -212,7 +213,6 @@ def calculateDateEditDistance(date1, date2):
 
 
 def identifyCutOffRecords(orders, unavailableBalance):
-	orders.sort(reverse = True)
 	if unavailableBalance > 0:
 		cutOffValues = attemptCutOff(orders, unavailableBalance)
 
