@@ -8,6 +8,8 @@ class AmazonOrderRecord(AmazonRecord):
 		self.invoiceNumber = ''
 		self.cashReceived = productSales + shippingCredits + sellingFees
 		self.matchSubtotal = productSales + shippingCredits + salesTaxCollected
+		# self.matchSubtotal = productSales + salesTaxCollected
+		# self.matchSubtotal = productSales
 		self.taxedTotal = salesTaxCollected + total
 		self.cutOff = False
 
