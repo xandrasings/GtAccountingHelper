@@ -117,7 +117,7 @@ def processQuickBooksReport(filePath):
 	return invoices
 
 
-def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, reportFilePath):
+def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, balanceAction, reportFilePath):
 	workbook = loadWorkbook(AMAZON, amazonFilePath, False)
 	sheet = loadSheet(workbook, AMAZON)
 
@@ -141,7 +141,7 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, r
 			nonOrders.append(AmazonNonOrderRecord(row, date, recordType))
 	
 	populateInvoiceNumbers(orders, quickBooksRecords)
-	cutOffSplit = identifyCutOffRecords(orders, unavailableBalance)
+	cutOffSplit = identifyCutOffRecords(orders, unavailableBalance) if balanceAction else None
 
 	modifyAmazonReport(sheet, orders, nonOrders, cutOffSplit)
 	saveAmazonReport(workbook, reportFilePath)
