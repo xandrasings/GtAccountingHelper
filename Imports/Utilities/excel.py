@@ -133,7 +133,11 @@ def processAmazonReport(amazonFilePath, quickBooksRecords, unavailableBalance, b
 			orderId = getCellString(sheet, row, LOCATION[AMAZON][COLUMN][ORDER_ID])
 			productSales = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][PRODUCT_SALES])
 			shippingCredits = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SHIPPING_CREDITS])
-			salesTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SALES_TAX_COLLECTED])
+			productSalesTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][PRODUCT_SALES_TAX])
+			shippingCreditsTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SHIPPING_CREDITS_TAX])
+			giftwrapCreditsTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][GIFT_WRAP_CREDITS_TAX])
+			promotionalRebatesTaxCollected = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][PROMOTIONAL_REBATES_TAX])
+			salesTaxCollected = productSalesTaxCollected + shippingCreditsTaxCollected + giftwrapCreditsTaxCollected + promotionalRebatesTaxCollected
 			sellingFees = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][SELLING_FEES])
 			total = getCellFloat(sheet, row, LOCATION[AMAZON][COLUMN][TOTAL])
 			orders.append(AmazonOrderRecord(row, date, orderId, city, productSales, shippingCredits, salesTaxCollected, sellingFees, total))

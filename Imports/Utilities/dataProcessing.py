@@ -7,7 +7,8 @@ from .sys import *
 def processReports():
 	filePaths = collectFilePaths()
 	amazonSummaryData = collectAmazonSummaryData()
-	balanceAction = offerBalanceAction()
+	balanceAction = False
+	# balanceAction = offerBalanceAction()
 	summarizeUserInput(filePaths, amazonSummaryData)
 	quickBooksRecords = processQuickBooksReport(filePaths[QUICKBOOKS])
 	filePaths[REPORT] = modifyFileName(filePaths[REPORT], filePaths[AMAZON])
